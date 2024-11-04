@@ -5,7 +5,7 @@ from Button import Button
 import random
 import time
 
-
+#checks for the correct color on click
 def clickedOn(colourClick):
     for i in buttonList:
         if (i.colour==colourClick):
@@ -13,10 +13,7 @@ def clickedOn(colourClick):
             del buttonList[temp]
             break
 
-
-
-
-
+#Base variables
 interval=110
 nextButton=0
 buttonList=[]
@@ -26,7 +23,6 @@ yellow=(255,255,0)
 red=(255,0,0)
 black=(0,0,0)
 white=(255,255,255)
-
 pygame.init() 
 font = pygame.font.Font('freesansbold.ttf', 24)
 clock = pygame.time.Clock()
@@ -36,14 +32,17 @@ score=0
 streakLim=False
 startTime=time.time()
 running = True
+
+
 while running: 
-    #stopping process
+    
     for event in pygame.event.get():  
-        
-            
+        #stopping process
         if event.type == pygame.QUIT: 
             print(score)
             running=False
+
+        #Checks for left click and then looks for the x and y position and gets a screenshot of when you clicked
         if event.type == pygame.MOUSEBUTTONDOWN:
             if event.button==1:
                 streakLim=False
@@ -56,6 +55,7 @@ while running:
                 img.convert('RGB')
                 
                 x, y = pygame.mouse.get_pos()
+                #checks all positions that are a good place to click that could award points and will add points depending on how much of the falling circle is in the area
                 if(((x>75)and(x<125))and((y>375)and(y<430))):
                     for i in range(50):
                         for y in range(55):
@@ -118,6 +118,7 @@ while running:
             # Close the screenshot
             
             screenshot.close()    
+    #sets different speeds depemding on how much time has gone by
     if (time.time()-startTime)>=60:
             print(score)
             running=False
@@ -134,7 +135,8 @@ while running:
     pygame.draw.rect(window, (black),[0, 0, 500, 500], 0)  
     pygame.draw.rect(window, (white),[0, 375, 500, 5], 0)   
     pygame.draw.rect(window, (white),[0, 430, 500, 5], 0) 
-    
+
+    #draws the correct spots of where to click
     for i in range (4):
         i+=1
         pygame.draw.circle(window, (white),
@@ -142,6 +144,7 @@ while running:
         pygame.draw.circle(window, (black),
                         [100*i, 405], 27.5, 0)  
     nextButton+=1
+    #creates the falling circles that should be clicked on
     if (nextButton>=interval):
             nextButton=0
             colour=random.randint(1,4)
